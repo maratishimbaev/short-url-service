@@ -32,6 +32,6 @@ func (u *UrlUseCase) AddUrl(url *models.Url) (err error) {
 	return u.repository.CreateUrl(url)
 }
 
-func (u *UrlUseCase) GetUrl(oldUrl string) (url *models.Url, err error) {
-	return nil, nil
+func (u *UrlUseCase) GetUrl(newUrl string) (url *models.Url, err error) {
+	return u.repository.GetUrl(newUrl)
 }

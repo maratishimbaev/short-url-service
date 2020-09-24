@@ -7,12 +7,15 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/kataras/golog"
 	_ "github.com/lib/pq"
+	"math/rand"
 	"net/http"
 	"os"
+	"short-url-service/app/middleware"
 	urlHttp "short-url-service/app/url/delivery/http"
 	"short-url-service/app/url/interfaces"
 	"short-url-service/app/url/repository/postgres"
 	"short-url-service/app/url/usecase"
+	"time"
 )
 
 type app struct {
@@ -54,7 +57,10 @@ var port = flag.Uint64("p", 8000, "port")
 func (a *app) Start() {
 	flag.Parse()
 
+	rand.Seed(time.Now().UnixNano())
+
 	router := mux.NewRouter()
+	router.Use(middleware.LogMiddleware)
 
 	urlHttp.RegisterHttpEndpoints(router, a.urlUseCase)
 

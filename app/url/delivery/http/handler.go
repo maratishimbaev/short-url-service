@@ -3,6 +3,7 @@ package urlHttp
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"short-url-service/app/models"
@@ -47,5 +48,18 @@ func (h *Handler) AddUrl(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetPage(w http.ResponseWriter, r *http.Request) {
+	newUrl := mux.Vars(r)["url"]
 
+	url, err := h.useCase.GetUrl(newUrl)
+	switch true {
+	case errors.Is(err, urlInterfaces.ErrNotFound):
+		w.WriteHeader(http.StatusNotFound)
+		return
+	case err == nil:
+		http.Redirect(w, r, url.OldUrl, http.StatusMovedPermanently)
+		return
+	default:
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
