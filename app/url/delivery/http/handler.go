@@ -2,6 +2,7 @@ package urlHttp
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"short-url-service/app/models"
@@ -32,12 +33,17 @@ func (h *Handler) AddUrl(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = h.useCase.AddUrl(&url)
-	if err != nil {
+	switch true {
+	case errors.Is(err, urlInterfaces.ErrAlreadyExists):
+		w.WriteHeader(http.StatusConflict)
+		return
+	case err == nil:
+		w.WriteHeader(http.StatusOK)
+		return
+	default:
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func (h *Handler) GetPage(w http.ResponseWriter, r *http.Request) {
