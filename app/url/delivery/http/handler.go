@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
+	"gopkg.in/validator.v2"
 	"io/ioutil"
 	"net/http"
 	"short-url-service/app/models"
@@ -30,6 +31,11 @@ func (h *Handler) AddUrl(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &url)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if errs := validator.Validate(url); errs != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
