@@ -14,6 +14,12 @@ func NewUrlRepository(db *sql.DB) *UrlRepository {
 }
 
 func (r *UrlRepository) CreateUrl(url *models.Url) (err error) {
+	query := "insert into url (old_url, new_url) values ($1, $2)"
+	_, err = r.db.Exec(query, url.OldUrl, url.NewUrl)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

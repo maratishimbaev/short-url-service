@@ -9,6 +9,7 @@ import (
 	_ "github.com/lib/pq"
 	"net/http"
 	"os"
+	urlHttp "short-url-service/app/url/delivery/http"
 	"short-url-service/app/url/interfaces"
 	"short-url-service/app/url/repository/postgres"
 	"short-url-service/app/url/usecase"
@@ -54,6 +55,8 @@ func (a *app) Start() {
 	flag.Parse()
 
 	router := mux.NewRouter()
+
+	urlHttp.RegisterHttpEndpoints(router, a.urlUseCase)
 
 	http.Handle("/", router)
 
