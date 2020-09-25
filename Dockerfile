@@ -3,6 +3,6 @@ FROM golang:alpine
 WORKDIR /go/src/app
 COPY . .
 
-RUN make build
+RUN apk add make && make build
 
 CMD sleep 10 && ./build
