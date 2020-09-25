@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 	"short-url-service/app/middleware"
-	urlHttp "short-url-service/app/url/delivery/http"
+	"short-url-service/app/url/delivery/http"
 	"short-url-service/app/url/interfaces"
 	"short-url-service/app/url/repository/postgres"
 	"short-url-service/app/url/usecase"

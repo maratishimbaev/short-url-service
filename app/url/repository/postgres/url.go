@@ -2,6 +2,7 @@ package urlPostgres
 
 import (
 	"database/sql"
+	"github.com/kataras/golog"
 	"short-url-service/app/models"
 	"short-url-service/app/url/interfaces"
 )
@@ -18,6 +19,7 @@ func (r *UrlRepository) CreateUrl(url *models.Url) (err error) {
 	query := "insert into url (old_url, new_url) values ($1, $2)"
 	_, err = r.db.Exec(query, &url.OldUrl, &url.NewUrl)
 	if err != nil {
+		golog.Error(err.Error())
 		return urlInterfaces.ErrAlreadyExists
 	}
 

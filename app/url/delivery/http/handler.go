@@ -30,7 +30,7 @@ func (h *Handler) AddUrl(w http.ResponseWriter, r *http.Request) {
 
 	err = json.Unmarshal(body, &url)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
