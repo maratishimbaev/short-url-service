@@ -60,6 +60,7 @@ func (a *app) Start() {
 	rand.Seed(time.Now().UnixNano())
 
 	router := mux.NewRouter()
+	router.Use(middleware.RecoveryMiddleware)
 	router.Use(middleware.LogMiddleware)
 
 	urlHttp.RegisterHttpEndpoints(router, a.urlUseCase)

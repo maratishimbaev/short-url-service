@@ -1,10 +1,13 @@
 package middleware
 
 import (
+	"context"
 	"github.com/kataras/golog"
 	"math/rand"
 	"net/http"
 )
+
+const requestNumberSize = 4
 
 var numbers = []rune("0123456789")
 
@@ -32,7 +35,8 @@ func generateRequestNumber(size int) string {
 
 func LogMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		requestNumber := generateRequestNumber(3)
+		requestNumber := generateRequestNumber(requestNumberSize)
+		r = r.WithContext(context.WithValue(r.Context(), "id", requestNumber))
 		
 		golog.Infof("#%s: %s %s", requestNumber, r.Method, r.URL)
 
