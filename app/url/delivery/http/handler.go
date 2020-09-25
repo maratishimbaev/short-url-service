@@ -7,6 +7,7 @@ import (
 	"gopkg.in/validator.v2"
 	"io/ioutil"
 	"net/http"
+	_url "net/url"
 	"short-url-service/app/models"
 	"short-url-service/app/url/interfaces"
 )
@@ -35,6 +36,12 @@ func (h *Handler) AddUrl(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if errs := validator.Validate(url); errs != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	_, err = _url.ParseRequestURI(url.OldUrl)
+	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
