@@ -24,10 +24,10 @@ type app struct {
 
 func InitDatabase() (db *sql.DB, err error) {
 	dbInfo := fmt.Sprintf(
-		"host=127.0.0.1 user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("SHORT_URL_SERVICE_USER"),
-		os.Getenv("SHORT_URL_SERVICE_PASSWORD"),
-		os.Getenv("SHORT_URL_SERVICE_DBNAME"),
+		"postgresql://%s:%s@postgres/%s?sslmode=disable",
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_DB"),
 	)
 
 	return sql.Open("postgres", dbInfo)
