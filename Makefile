@@ -3,3 +3,4 @@ build:
 
 test-cover:
 	go test -covermode=atomic -coverpkg=./... -coverprofile cover.out ./...
+	rm -f cover.out
